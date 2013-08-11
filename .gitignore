@@ -19,3 +19,5 @@ foo.log
 ideas.mdown
 snippets.rb
 terminology.mdown
+foo/indexes.db
+foo/updates.log
