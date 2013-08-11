@@ -27,4 +27,5 @@ Gem::Specification.new do |spec|
   spec.add_dependency "activemodel"
   spec.add_dependency "uuidtools"
   spec.add_dependency "sequel"
+  spec.add_dependency "sqlite3"
 end

@@ -1,10 +1,12 @@
 require "lambent/version"
 
+require 'sequel'
 require 'virtus'
 require 'uuidtools'
 
 require 'active_support/core_ext/module/aliasing'
 require 'active_support/core_ext/class/attribute'
+require 'active_support/core_ext/string/inflections'
 require 'active_support/dependencies/autoload'
 require 'active_support/concern'
 require 'active_support/json'
@@ -21,6 +23,9 @@ module Lambent
 
   autoload :Entity
   autoload :DataStore
+  autoload :ViewStore
+  autoload :Indexer
+  autoload :Session
 
   # true when we are in the view generation process
   def self.generating_view?

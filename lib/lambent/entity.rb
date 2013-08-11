@@ -8,15 +8,17 @@ module Lambent
     autoload :Attribute
     autoload :Assocation
     autoload :MemberDeclarations
+    autoload :FinderMethods
 
     include Virtus
     include ActiveModel::Dirty
     include Entity::MemberDeclarations
+    include Entity::FinderMethods
 
 
     attribute :id, String, default: ->(entity, attribute){ UUIDTools::UUID.timestamp_create.hexdigest }
 
-    def save(data_store)
+    def save(data_store=Lambent::Session.current_data_store)
       m = get_modification
       data_store.write_modification m
 

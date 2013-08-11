@@ -9,6 +9,7 @@ module Lambent
       @type    = type
       @id      = id
       @changes = changes
+      @changes.delete('id')
     end
   end
 end
