@@ -22,6 +22,7 @@ module Lambent
   extend ActiveSupport::Autoload
 
   autoload :Entity
+  autoload :EntityDefinition
   autoload :DataStore
   autoload :ViewStore
   autoload :Indexer

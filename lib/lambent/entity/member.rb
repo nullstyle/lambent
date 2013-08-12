@@ -7,5 +7,9 @@ module Lambent
       @name = name
     end
 
+    def write_methods(mod)
+      raise NotImplementedError, "implement in subclass"
+    end
+
   end
 end

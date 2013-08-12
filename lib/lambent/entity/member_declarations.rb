@@ -4,8 +4,18 @@ module Lambent
 
     module ClassMethods
 
-      def attribute_with_lambent(*args)
-        attribute_without_lambent(*args)
+      # def attribute_with_lambent(*args)
+      #   attribute_without_lambent(*args)
+      # end
+
+      def attribute(*args, &block)
+        attribute = if block.nil?
+                       Entity::Attribute.new(*args, &block)
+                    else
+                       Entity::ComputedAttribute.new(*args, &block) #TODO
+                     end
+
+        entity_definition.add_attribute attribute
       end
 
       def scope(*args)      ; end

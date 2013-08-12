@@ -1,7 +1,7 @@
 module Lambent
   module Entity
-    extend ActiveSupport::Concern
     extend ActiveSupport::Autoload
+    extend ActiveSupport::Concern
 
     autoload :Member
     autoload :Scope
@@ -9,14 +9,22 @@ module Lambent
     autoload :Assocation
     autoload :MemberDeclarations
     autoload :FinderMethods
+    autoload :Initialization
 
-    include Virtus
     include ActiveModel::Dirty
     include Entity::MemberDeclarations
     include Entity::FinderMethods
+    include Entity::Initialization
+
+    included do
+      class_attribute :entity_definition
+      self.entity_definition = EntityDefinition.new
+      include self.entity_definition.generated_methods
+
+      attribute :id, String, default: ->(entity, attribute){ UUIDTools::UUID.timestamp_create.hexdigest }
+    end
 
 
-    attribute :id, String, default: ->(entity, attribute){ UUIDTools::UUID.timestamp_create.hexdigest }
 
     def save(data_store=Lambent::Session.current_data_store)
       m = get_modification
@@ -25,6 +33,12 @@ module Lambent
       @previously_changed = changes
       @changed_attributes.clear
       true
+    end
+
+    def attributes=(attributes)
+      attributes.each do |key, value|
+        puts "writing #{key}:#{value}"
+      end
     end
 
     private
