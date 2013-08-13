@@ -35,6 +35,11 @@ module Lambent
       true
     end
 
+    def loaded_from_db!
+      @changed_attributes.clear
+      self
+    end
+
     def attributes=(attributes)
       attributes.each do |key, value|
         self.__send__ "#{key}=", value

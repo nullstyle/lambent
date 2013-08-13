@@ -7,7 +7,7 @@ module Lambent
       def find(id, view_store=Lambent::Session.current_view_store)
         attributes = view_store.find_one(self, id)
         return nil unless attributes
-        new(attributes.merge(id:id))
+        new(attributes.merge(id:id)).loaded_from_db!
       end
 
     end
