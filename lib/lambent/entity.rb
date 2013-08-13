@@ -6,6 +6,7 @@ module Lambent
     autoload :Member
     autoload :Scope
     autoload :Attribute
+    autoload :ComputedAttribute
     autoload :Assocation
     autoload :MemberDeclarations
     autoload :FinderMethods

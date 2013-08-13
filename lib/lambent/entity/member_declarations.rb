@@ -23,7 +23,17 @@ module Lambent
       def has_many(*args)   ; end
       def belongs_to(*args) ; end
       def has_one(*args)    ; end
-        
+      
+
+
+      # 
+      # Declared a dependency for the next defined member on the 
+      # @param  name [type] [description]
+      # 
+      # @return [type] [description]
+      def depends_on(name)
+        entity_definition.add_dependency name
+      end
     end
   end
 end
