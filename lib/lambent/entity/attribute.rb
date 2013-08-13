@@ -9,12 +9,10 @@ module Lambent
     end
 
     def get(instance)
-      puts "getting #{@name} from #{instance.inspect}"
       instance.instance_variable_get(instance_variable_name)
     end
 
     def set(instance, value)
-      puts "setting #{@name} from #{instance.inspect} to #{value}"
       instance.__send__(:"#{@name}_will_change!")
       instance.instance_variable_set(instance_variable_name, value)
     end
