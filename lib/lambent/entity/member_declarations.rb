@@ -4,10 +4,6 @@ module Lambent
 
     module ClassMethods
 
-      # def attribute_with_lambent(*args)
-      #   attribute_without_lambent(*args)
-      # end
-
       def attribute(*args, &block)
         attribute = if block.nil?
                        Entity::Attribute.new(*args, &block)

@@ -5,9 +5,9 @@ module Lambent
     attr_reader :members
     attr_reader :generated_methods
 
-    def initialize
+    def initialize(parent)
       @members = {}
-      @generated_methods = Module.new
+      @parent = parent
     end
 
     def add_attribute(attribute)
@@ -18,7 +18,7 @@ module Lambent
     def add_member(member)
       raise MemberAlreadyDefinedError if @members[member.name]
       @members[member.name] = member
-      member.write_methods(@generated_methods)
+      member.write_methods(@parent)
     end
   end
 end

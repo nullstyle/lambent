@@ -10,21 +10,31 @@ module Lambent
 
     def get(instance)
       puts "getting #{@name} from #{instance.inspect}"
+      instance.instance_variable_get(instance_variable_name)
     end
 
     def set(instance, value)
       puts "setting #{@name} from #{instance.inspect} to #{value}"
+      instance.__send__(:"#{@name}_will_change!")
+      instance.instance_variable_set(instance_variable_name, value)
     end
     
     def write_methods(mod)
       attribute = self
       name      = @name
-      
+
       mod.class_eval do
         define_method(name){ attribute.get(self) }
-        define_method(:"#{name}="){ |value| attribute.get(self) }
+        define_method(:"#{name}="){ |value| attribute.set(self, value) }
+
+        define_attribute_methods name
       end
 
+    end
+
+    private
+    def instance_variable_name
+      @instance_variable_name ||= "@_#{@name}_"
     end
   end
 end

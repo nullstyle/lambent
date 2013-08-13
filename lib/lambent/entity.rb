@@ -11,6 +11,7 @@ module Lambent
     autoload :FinderMethods
     autoload :Initialization
 
+    include ActiveModel::AttributeMethods
     include ActiveModel::Dirty
     include Entity::MemberDeclarations
     include Entity::FinderMethods
@@ -18,8 +19,7 @@ module Lambent
 
     included do
       class_attribute :entity_definition
-      self.entity_definition = EntityDefinition.new
-      include self.entity_definition.generated_methods
+      self.entity_definition = EntityDefinition.new(self)
 
       attribute :id, String, default: ->(entity, attribute){ UUIDTools::UUID.timestamp_create.hexdigest }
     end
@@ -37,7 +37,7 @@ module Lambent
 
     def attributes=(attributes)
       attributes.each do |key, value|
-        puts "writing #{key}:#{value}"
+        self.__send__ "#{key}=", value
       end
     end
 
@@ -46,7 +46,7 @@ module Lambent
       return nil unless changed?
 
       changes = changed.each_with_object({}) do |key, result|
-        result[key] = self[key]
+        result[key] = self.__send__ key
       end
 
       modification = DataStore::Modification.new(self.class, self.id, changes)
