@@ -9,12 +9,26 @@ module Lambent
     end
 
     def get(instance)
+      unless instance.instance_variable_defined? instance_variable_name
+        new_value = default_value(instance)
+        instance.changed_attributes[@name] = nil
+        instance.instance_variable_set(instance_variable_name, new_value)
+      end
+
       instance.instance_variable_get(instance_variable_name)
     end
 
     def set(instance, value)
       instance.__send__(:"#{@name}_will_change!")
       instance.instance_variable_set(instance_variable_name, value)
+    end
+
+    def default_value(instance)
+      if @default.respond_to? :call
+        @default.call
+      else
+        @default
+      end
     end
     
     def write_methods(mod)

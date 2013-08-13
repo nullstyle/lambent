@@ -21,7 +21,7 @@ module Lambent
       class_attribute :entity_definition
       self.entity_definition = EntityDefinition.new(self)
 
-      attribute :id, String, default: ->(entity, attribute){ UUIDTools::UUID.timestamp_create.hexdigest }
+      attribute :id, String, default: -> { UUIDTools::UUID.timestamp_create.hexdigest }
     end
 
 
