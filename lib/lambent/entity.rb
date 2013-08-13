@@ -18,6 +18,8 @@ module Lambent
     include Entity::Initialization
 
     included do
+      extend ActiveModel::Naming
+
       class_attribute :entity_definition
       self.entity_definition = EntityDefinition.new(self)
 
