@@ -21,3 +21,4 @@ snippets.rb
 terminology.mdown
 foo/indexes.db
 foo/updates.log
+.DS_Store
