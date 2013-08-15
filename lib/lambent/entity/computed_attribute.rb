@@ -9,13 +9,11 @@ module Lambent
     end
 
     def get(instance)
-      unless instance.instance_variable_defined? instance_variable_name
-        new_value = default_value(instance)
-        instance.changed_attributes[@name] = nil
-        instance.instance_variable_set(instance_variable_name, new_value)
-      end
+      instance.computed_attributes[name]
+    end
 
-      instance.instance_variable_get(instance_variable_name)
+    def compute(instance)
+      @value_block.instance_exec(instance, &@value_block)
     end
 
     def write_methods(mod)
@@ -27,11 +25,6 @@ module Lambent
         define_attribute_methods name
       end
 
-    end
-
-    private
-    def instance_variable_name
-      @instance_variable_name ||= "@_#{@name}_"
     end
   end
 end

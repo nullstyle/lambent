@@ -20,6 +20,8 @@ module Lambent
 
     included do
       extend ActiveModel::Naming
+      
+      Entity.all_types << self # janky method of recording who includes entity
 
       class_attribute :entity_definition
       self.entity_definition = EntityDefinition.new(self)
@@ -27,6 +29,11 @@ module Lambent
       attribute :id, String, default: -> { UUIDTools::UUID.timestamp_create.hexdigest }
     end
 
+    def self.all_types
+      @all_types ||= []
+    end
+
+    attr_accessor :computed_attributes
 
 
     def save(data_store=Lambent::Session.current_data_store)
@@ -46,6 +53,12 @@ module Lambent
     def attributes=(attributes)
       attributes.each do |key, value|
         self.__send__ "#{key}=", value
+      end
+    end
+
+    def build_computed_attributes()
+      entity_definition.computed_attributes.each_with_object({}) do |ca, result|
+        result[ca.name] = ca.compute(self)
       end
     end
 

@@ -1,5 +1,7 @@
 module Lambent
   class ViewStore
+    require 'lambent/view_store/result'
+
     class ViewNotFoundError < StandardError ; end
 
     def initialize(path)
@@ -9,8 +11,16 @@ module Lambent
     def find_one(klass, id)
       table = get_table(klass)
       row = table.first(id:id)
+      self.class.get_result(row)
+    end
+
+    def self.get_result(row)
       return nil unless row
-      ActiveSupport::JSON.decode row[:attributes]
+
+      Result.new(
+        row[:id],
+        ActiveSupport::JSON.decode(row[:attributes]),
+        ActiveSupport::JSON.decode(row[:computed_attributes]))
     end
 
 

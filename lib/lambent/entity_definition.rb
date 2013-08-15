@@ -3,7 +3,6 @@ module Lambent
     class MemberAlreadyDefinedError < StandardError ; end
 
     attr_reader :members
-    attr_reader :generated_methods
 
     def initialize(parent)
       @members = {}
@@ -17,6 +16,10 @@ module Lambent
 
     def add_dependency(name)
       @dependencies_for_next_member << name
+    end
+
+    def computed_attributes
+      @members.values.select{|m| m.is_a?(Entity::ComputedAttribute)}
     end
 
     private
